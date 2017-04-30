@@ -26,6 +26,14 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+
+//  DLUT
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <linux/socket.h>
+#include <netinet/in.h>
+#define SERV_PORT 8000  //DLUT
+
 #include "csi_fun.h"
 
 #define BUFSIZE 4096
@@ -52,7 +60,33 @@ int main(int argc, char* argv[])
     int         log_flag;
     unsigned char endian_flag;
     u_int16_t   buf_len;
-    
+
+
+
+
+	//DLUT
+    int         payload_len;
+	char        serv_ip[16];
+	int         sockfd;
+	struct      sockaddr_in servaddr;
+	
+	/* add a socket */
+	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	{
+		printf("socket error\n");
+		return 0;
+	}
+
+	/* initialize serveraddr struct */
+	memset(&servaddr, 0, sizeof(servaddr));
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_port = htons(SERV_PORT);
+	//servaddr.sin_addr.s_addr = INADDR_ANY;    //DLUT
+
+	
+	
+
+
     log_flag = 1;
     csi_status = (csi_struct*)malloc(sizeof(csi_struct));
     /* check usage */
@@ -62,22 +96,42 @@ int main(int argc, char* argv[])
          */
         log_flag  = 0;
         printf("/**************************************/\n");
-        printf("/*   Usage: recv_csi <output_file>    */\n");
+        printf("/*   Usage: recv_csi <ipaddress>    */\n");
         printf("/**************************************/\n");
+
+
     }
     if (2 == argc){
-        fp = fopen(argv[1],"w");
-        if (!fp){
-            printf("Fail to open <output_file>, are you root?\n");
-            fclose(fp);
-            return 0;
-        }
 
-        if(is_big_endian())
-            endian_flag = 0xff;
-        else
-            endian_flag = 0x0;
-        fwrite(&endian_flag,1,1,fp);        
+		//DULT
+        /* 
+		*fp = fopen(argv[1],"w");
+        *if (!fp){
+        *    printf("Fail to open <output_file>, are you root?\n");
+        *    fclose(fp);
+        *    return 0;
+        *}
+		*/
+
+		strcpy(serv_ip, argv[1]);
+		if(inet_pton(AF_INET, serv_ip, &servaddr.sin_addr)<0)
+		{
+			printf("inet_pton error\n");
+			return 0;
+		}
+		
+		if(connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))<0)
+		{
+			printf("connect error to: %s \n", serv_ip);
+			return 0;
+		}                                                         ////    DLUT
+        endian_flag = 0x01;
+        //DLUT  //fwrite(&endian_flag,1,1,sockfd);        
+
+		
+
+
+
     }
     if (argc > 2){
         printf(" Too many input arguments !\n");
@@ -95,11 +149,17 @@ int main(int argc, char* argv[])
     quit = 0;
     total_msg_cnt = 0;
     
+	sleep(1);
+
+	write(sockfd, &endian_flag, sizeof(endian_flag));
+
+
     while(1){
         if (1 == quit){
-            return 0;
-            fclose(fp);
+            
+            //fclose(sockfd);
             close_csi_device(fd);
+			return 0;
         }
 
         /* keep listening to the kernel and waiting for the csi report */
@@ -124,17 +184,32 @@ int main(int argc, char* argv[])
              */
             //porcess_csi(data_buf, csi_status, csi_matrix);   
             
+
+
+			//DLUT              DLUT             DLUT               DLUT
+
+			/* standard buff_len is: 989 payload_len is: 124 msg rage is: 0x8e*/
             printf("Recv %dth msg with rate: 0x%02x | payload len: %d\n",total_msg_cnt,csi_status->rate,csi_status->payload_len);
-            
+            printf("buf_len is :%d \n", csi_status->buf_len);
             /* log the received data for off-line processing */
             if (log_flag){
                 buf_len = csi_status->buf_len;
-                fwrite(&buf_len,1,2,fp);
-                fwrite(buf_addr,1,buf_len,fp);
+				payload_len = csi_status->payload_len;
+
+
+				//DLUT
+				/*
+                *fwrite(&buf_len,1,2,sockfd);
+                *fwrite(buf_addr,1,buf_len,sockfd);  ////DLUT
+				*/                                  ///DLUT
+
+				write(sockfd, &buf_len, sizeof(buf_len));
+				write(sockfd, buf_addr, buf_len);
+
             }
         }
     }
-    fclose(fp);
+   // fclose(fp);
     close_csi_device(fd);
     free(csi_status);
     return 0;
