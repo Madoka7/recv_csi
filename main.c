@@ -27,12 +27,12 @@
 #include <sys/stat.h>
 
 
-//  DLUT
+//  
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <linux/socket.h>
 #include <netinet/in.h>
-#define SERV_PORT 8000  //DLUT
+#define SERV_PORT 8000  //
 
 #include "csi_fun.h"
 
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
 
 
-	//DLUT
+	//
     int         payload_len;
 	char        serv_ip[16];
 	int         sockfd;
@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 	memset(&servaddr, 0, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_port = htons(SERV_PORT);
-	//servaddr.sin_addr.s_addr = INADDR_ANY;    //DLUT
+	//servaddr.sin_addr.s_addr = INADDR_ANY;    //
 
 	
 	
@@ -124,9 +124,9 @@ int main(int argc, char* argv[])
 		{
 			printf("connect error to: %s \n", serv_ip);
 			return 0;
-		}                                                         ////    DLUT
+		}                                                         ////    
         endian_flag = 0x01;
-        //DLUT  //fwrite(&endian_flag,1,1,sockfd);        
+        //  //fwrite(&endian_flag,1,1,sockfd);        
 
 		
 
@@ -186,7 +186,6 @@ int main(int argc, char* argv[])
             
 
 
-			//DLUT              DLUT             DLUT               DLUT
 
 			/* standard buff_len is: 989 payload_len is: 124 msg rage is: 0x8e*/
             printf("Recv %dth msg with rate: 0x%02x | payload len: %d\n",total_msg_cnt,csi_status->rate,csi_status->payload_len);
@@ -197,11 +196,10 @@ int main(int argc, char* argv[])
 				payload_len = csi_status->payload_len;
 
 
-				//DLUT
 				/*
                 *fwrite(&buf_len,1,2,sockfd);
-                *fwrite(buf_addr,1,buf_len,sockfd);  ////DLUT
-				*/                                  ///DLUT
+                *fwrite(buf_addr,1,buf_len,sockfd);  ////
+				*/                                  ///
 
 				write(sockfd, &buf_len, sizeof(buf_len));
 				write(sockfd, buf_addr, buf_len);
