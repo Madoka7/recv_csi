@@ -135,6 +135,18 @@ int read_csi_buf(unsigned char* buf_addr,int fd, int BUFSIZE){
     else
         return 0;
 }
+
+
+unsigned char temp;
+
+void swap(unsigned char *a, unsigned char *b)
+{
+	unsigned char temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
 void record_status(unsigned char* buf_addr, int cnt, csi_struct* csi_status){
     if (is_big_endian()){
         csi_status->tstamp  =   
@@ -147,6 +159,7 @@ void record_status(unsigned char* buf_addr, int cnt, csi_struct* csi_status){
         csi_status->buf_len = ((buf_addr[cnt-2] << 8) & 0xff00) | (buf_addr[cnt-1] & 0x00ff);
         csi_status->payload_len = ((buf_addr[csi_st_len] << 8) & 0xff00) |
             ((buf_addr[csi_st_len + 1]) & 0x00ff);
+
     }else{
         csi_status->tstamp  =   
             ((buf_addr[7] << 56) & 0x00000000000000ff) | ((buf_addr[6] << 48) & 0x000000000000ff00) | 
@@ -161,6 +174,21 @@ void record_status(unsigned char* buf_addr, int cnt, csi_struct* csi_status){
         
         csi_status->payload_len = ((buf_addr[csi_st_len+1] << 8) & 0xff00) | 
             (buf_addr[csi_st_len] & 0x00ff);
+
+
+		swap(&buf_addr[csi_st_len],&buf_addr[csi_st_len + 1]);
+
+		swap(&buf_addr[cnt-1],&buf_addr[cnt-2]);
+
+
+		
+		printf("current buf is:%c%c\n",buf_addr[8],buf_addr[9]);
+
+		swap(&buf_addr[8],&buf_addr[9]);
+
+		swap(&buf_addr[10],&buf_addr[11]);
+
+		printf("%c%c is after \n",buf_addr[8],buf_addr[9]);
     }
     csi_status->phyerr    = buf_addr[12];
     csi_status->noise     = buf_addr[13];

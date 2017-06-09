@@ -36,7 +36,7 @@
 
 #include "csi_fun.h"
 
-#define BUFSIZE 4096
+#define BUFSIZE 4096 
 
 int quit;
 unsigned char buf_addr[BUFSIZE];
@@ -193,16 +193,41 @@ int main(int argc, char* argv[])
             /* log the received data for off-line processing */
             if (log_flag){
                 buf_len = csi_status->buf_len;
+
+				if(buf_len > 1000)
+					continue;
+
 				payload_len = csi_status->payload_len;
+
+
+				// Even I changed data here, the data in buffer is still not changed. So I have to chang it in buffer
+				// Or on the receive part
+
+
+				// Trans to Network Endian ? why did he trans that Endian in csi_fun.c
+
+				// Not to trans this.
+
+
+				csi_status->payload_len = htons(payload_len);
+
+				// I decided let tstamp died it self.
+				//csi_status->tstamp = htonl(csi_status->tstamp); 
+				csi_status->channel = htons(csi_status->channel);
+				csi_status->csi_len = htons(csi_status->csi_len);
+				
 
 
 				/*
                 *fwrite(&buf_len,1,2,sockfd);
                 *fwrite(buf_addr,1,buf_len,sockfd);  ////
 				*/                                  ///
-
+				
+				/* Current PC is little endian, trans data to network endian*/
+				buf_len = htons(buf_len);
 				write(sockfd, &buf_len, sizeof(buf_len));
-				write(sockfd, buf_addr, buf_len);
+				buf_len = ntohs(buf_len);
+				write(sockfd, buf_addr, csi_status->buf_len);
 
             }
         }

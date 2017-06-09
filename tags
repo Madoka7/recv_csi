@@ -1,0 +1,48 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUFSIZE	main.c	39;"	d	file:
+CC	Makefile	/^CC = gcc$/;"	m
+COMPLEX	csi_fun.h	/^}COMPLEX;$/;"	t	typeref:struct:__anon1
+Kernel_CSI_ST_LEN	csi_fun.h	16;"	d
+OBJS	Makefile	/^OBJS = csi_fun.o main.o$/;"	m
+SERV_PORT	main.c	35;"	d	file:
+bit_convert	csi_fun.c	/^int bit_convert(int data, int maxbit)$/;"	f
+buf_addr	main.c	/^unsigned char buf_addr[BUFSIZE];$/;"	v
+buf_len	csi_fun.h	/^    u_int16_t   buf_len;      \/*  data length in buffer *\/$/;"	m	struct:__anon2
+chanBW	csi_fun.h	/^    u_int8_t  chanBW;         \/* channel bandwidth (0->20MHz,1->40MHz)*\/$/;"	m	struct:__anon2
+channel	csi_fun.h	/^    u_int16_t channel;        \/* wireless channel (represented in Hz)*\/$/;"	m	struct:__anon2
+close_csi_device	csi_fun.c	/^void close_csi_device(int fd){$/;"	f
+csi_len	csi_fun.h	/^    u_int16_t   csi_len;      \/*  csi data length (bytes) *\/$/;"	m	struct:__anon2
+csi_matrix	main.c	/^COMPLEX csi_matrix[3][3][114];$/;"	v
+csi_st_len	csi_fun.c	26;"	d	file:
+csi_status	main.c	/^csi_struct*   csi_status;$/;"	v
+csi_struct	csi_fun.h	/^}csi_struct;$/;"	t	typeref:struct:__anon2
+data_buf	main.c	/^unsigned char data_buf[1500];$/;"	v
+fill_csi_matrix	csi_fun.c	/^void fill_csi_matrix(u_int8_t* csi_addr, int nr, int nc, int num_tones, COMPLEX(* csi_matrix)[3][114]){$/;"	f
+imag	csi_fun.h	/^    int imag;$/;"	m	struct:__anon1
+is_big_endian	csi_fun.c	/^bool is_big_endian(){$/;"	f
+main	main.c	/^int main(int argc, char* argv[])$/;"	f
+nc	csi_fun.h	/^    u_int8_t  nc;             \/* number of transmitting antenna*\/$/;"	m	struct:__anon2
+noise	csi_fun.h	/^    u_int8_t  noise;          \/* noise floor (to be updated)*\/$/;"	m	struct:__anon2
+nr	csi_fun.h	/^    u_int8_t  nr;             \/* number of receiving antenna*\/$/;"	m	struct:__anon2
+num_tones	csi_fun.h	/^    u_int8_t  num_tones;      \/* number of tones (subcarriers) *\/$/;"	m	struct:__anon2
+open_csi_device	csi_fun.c	/^int open_csi_device(){$/;"	f
+payload_len	csi_fun.h	/^    u_int16_t   payload_len;  \/*  payload length (bytes) *\/$/;"	m	struct:__anon2
+phyerr	csi_fun.h	/^    u_int8_t  phyerr;          \/* phy error code (set to 0 if correct)*\/$/;"	m	struct:__anon2
+porcess_csi	csi_fun.c	/^void  porcess_csi(unsigned char* data_buf, csi_struct* csi_status,COMPLEX(* csi_buf)[3][114]){$/;"	f
+quit	main.c	/^int quit;$/;"	v
+rate	csi_fun.h	/^    u_int8_t  rate;           \/* transmission rate*\/$/;"	m	struct:__anon2
+read_csi_buf	csi_fun.c	/^int read_csi_buf(unsigned char* buf_addr,int fd, int BUFSIZE){$/;"	f
+real	csi_fun.h	/^    int real;$/;"	m	struct:__anon1
+record_csi_payload	csi_fun.c	/^void record_csi_payload(unsigned char* buf_addr, csi_struct* csi_status, unsigned char* data_buf, COMPLEX(* csi_matrix)[3][114]){$/;"	f
+record_status	csi_fun.c	/^void record_status(unsigned char* buf_addr, int cnt, csi_struct* csi_status){$/;"	f
+rssi	csi_fun.h	/^    u_int8_t    rssi;         \/*  rx frame RSSI *\/$/;"	m	struct:__anon2
+rssi_0	csi_fun.h	/^    u_int8_t    rssi_0;       \/*  rx frame RSSI [ctl, chain 0] *\/$/;"	m	struct:__anon2
+rssi_1	csi_fun.h	/^    u_int8_t    rssi_1;       \/*  rx frame RSSI [ctl, chain 1] *\/$/;"	m	struct:__anon2
+rssi_2	csi_fun.h	/^    u_int8_t    rssi_2;       \/*  rx frame RSSI [ctl, chain 2] *\/$/;"	m	struct:__anon2
+sig_handler	main.c	/^void sig_handler(int signo)$/;"	f
+tstamp	csi_fun.h	/^    u_int64_t tstamp;         \/* h\/w assigned time stamp *\/$/;"	m	struct:__anon2
