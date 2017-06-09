@@ -195,7 +195,7 @@ int main(int argc, char* argv[])
                 buf_len = csi_status->buf_len;
 
 				if(buf_len > 1000)
-					continue;
+					//continue;
 
 				payload_len = csi_status->payload_len;
 
