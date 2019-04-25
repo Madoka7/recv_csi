@@ -12,6 +12,10 @@
  *   Organization:  WANDS group @ Nanyang Technological University
  *   
  *   Copyright (c)  WANDS group @ Nanyang Technological University
+ =======================================================================================
+ *   Modified by Xiangqi Kong, 2017
+ * . Dalian University of Technology
+ *   Description: Extract CSI from NIC then real-time write to MATLAB using socket to plot graph.
  * =====================================================================================
  */
 #include <stdlib.h>
